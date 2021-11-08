@@ -16,8 +16,6 @@ services:
     depends_on:
       - redis
       - mongo
-  redis:
-    image: "redis:alpine"
   mongo:
     image: mongo
     ports:
