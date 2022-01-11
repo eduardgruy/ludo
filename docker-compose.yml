@@ -16,6 +16,7 @@ services:
       - ./ludo-backend/.env
     depends_on:
       - mongo
+<<<<<<< HEAD
   frontend:
     container_name: ludo-frontend
     build:
@@ -33,6 +34,8 @@ services:
     depends_on:
       - mongo
       - backend
+=======
+>>>>>>> 0961df29147deb09a62f406b267f816de3c81c1b
   mongo:
     image: mongo
     ports:
