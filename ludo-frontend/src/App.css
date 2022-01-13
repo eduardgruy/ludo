@@ -7,20 +7,53 @@ label {
   max-width: 350px !important;
   padding: 40px 40px;
 }
+.game {
+  display: flex; /* or css grid for more intricate layouts */
+  flex-direction: row;
+  width: 100vw;
+}
+
+  .game-bkp {
+    display: flex; /* or css grid for more intricate layouts */
+    flex-direction: column;
+    float: left;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px auto;
+    position: relative;
+    width: 100vh;
+    height: 100%;
+    box-shadow: 0 0 12px 6px whitesmoke;
+    background-color: azure;}
+  
+.board {
+  float: left;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 12px 6px whitesmoke;
+  background-color: azure;
+}
+
 
 .board-container {
-  width: 80%;
+  width: 50%;
+}
+.controls-container {
+  width: 20%;
   float: left;
   padding: 30px;
 }
 .chat-container {
   background-color: #e1d9d9;
   margin-top: 0cm !important;
-  width: 20%;
+  width: 15%;
   height: 80vh;
   float: left;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: none;
   text-align: justify;
 }
 .card {
@@ -51,17 +84,7 @@ label {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
-.game {
-  float: left;
-  display: flex;
-  flex-wrap: wrap;
-  margin: 20px auto;
-  position: relative;
-  width: 95vh;
-  height: 95vh;
-  box-shadow: 0 0 12px 6px whitesmoke;
-  background-color: azure;
-}
+
 
 .green {
   background-color: #66bb6a;
@@ -219,239 +242,58 @@ label {
 }
 
 /* DICE */
+.face {
+	display: grid;
+	grid-template-areas:
+		"a . c"
+		"e g f"
+		"d . b";
 
-.dice {
-  align-items: center;
-  display: grid;
-  grid-gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-  grid-template-rows: auto;
-  justify-items: center;
-  padding: 2rem;
-  perspective: 400px;
+	flex: 0 0 auto;
+	margin: 16px;
+	padding: 10px;
+	width: 104px;
+	height: 104px;
+
+	background-color: #e7e7e7;
+	box-shadow: inset 0 5px white, inset 0 -5px #bbb, inset 5px 0 #d7d7d7,
+		inset -5px 0 #d7d7d7;
+	border-radius: 10%;
 }
 
-.die-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  height: 8rem;
-  list-style-type: none;
-  transform-style: preserve-3d;
-  width: 8rem;
+.pip {
+	display: block;
+	align-self: center;
+	justify-self: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background-color: #333;
+	box-shadow: inset 0 3px #111, inset 0 -3px #555;
 }
 
-.even-roll {
-  transition: transform 1.5s ease-out;
+.pip:nth-child(2) {
+	grid-area: b;
 }
-
-.odd-roll {
-  transition: transform 1.25s ease-out;
+.pip:nth-child(3) {
+	grid-area: c;
 }
-
-.die-item {
-  background-color: #fefefe;
-  box-shadow: inset -0.35rem 0.35rem 0.75rem rgba(0, 0, 0, 0.3), inset 0.5rem -0.25rem 0.5rem rgba(0, 0, 0, 0.15);
-  display: grid;
-  grid-column: 1;
-  grid-row: 1;
-  grid-template-areas: "one two three" "four five six" "seven eight nine";
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  height: 100%;
-  padding: 1rem;
-  width: 100%;
+.pip:nth-child(4) {
+	grid-area: d;
 }
-
-.dot {
-  align-self: center;
-  background-color: #676767;
-  border-radius: 50%;
-  box-shadow: inset -0.15rem 0.15rem 0.25rem rgba(0, 0, 0, 0.5);
-  display: block;
-  height: 1.25rem;
-  justify-self: center;
-  width: 1.25rem;
+.pip:nth-child(5) {
+	grid-area: e;
 }
-
-.even-roll[data-roll="1"] {
-  transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg);
+.pip:nth-child(6) {
+	grid-area: f;
 }
-
-.even-roll[data-roll="2"] {
-  transform: rotateX(450deg) rotateY(720deg) rotateZ(360deg);
-}
-
-.even-roll[data-roll="3"] {
-  transform: rotateX(360deg) rotateY(630deg) rotateZ(360deg);
-}
-
-.even-roll[data-roll="4"] {
-  transform: rotateX(360deg) rotateY(810deg) rotateZ(360deg);
-}
-
-.even-roll[data-roll="5"] {
-  transform: rotateX(270deg) rotateY(720deg) rotateZ(360deg);
-}
-
-.even-roll[data-roll="6"] {
-  transform: rotateX(360deg) rotateY(900deg) rotateZ(360deg);
-}
-
-.odd-roll[data-roll="1"] {
-  transform: rotateX(-360deg) rotateY(-720deg) rotateZ(-360deg);
-}
-
-.odd-roll[data-roll="2"] {
-  transform: rotateX(-270deg) rotateY(-720deg) rotateZ(-360deg);
-}
-
-.odd-roll[data-roll="3"] {
-  transform: rotateX(-360deg) rotateY(-810deg) rotateZ(-360deg);
-}
-
-.odd-roll[data-roll="4"] {
-  transform: rotateX(-360deg) rotateY(-630deg) rotateZ(-360deg);
-}
-
-.odd-roll[data-roll="5"] {
-  transform: rotateX(-450deg) rotateY(-720deg) rotateZ(-360deg);
-}
-
-.odd-roll[data-roll="6"] {
-  transform: rotateX(-360deg) rotateY(-900deg) rotateZ(-360deg);
-}
-
-[data-side="1"] {
-  transform: rotate3d(0, 0, 0, 90deg) translateZ(4rem);
-}
-
-[data-side="2"] {
-  transform: rotate3d(-1, 0, 0, 90deg) translateZ(4rem);
-}
-
-[data-side="3"] {
-  transform: rotate3d(0, 1, 0, 90deg) translateZ(4rem);
-}
-
-[data-side="4"] {
-  transform: rotate3d(0, -1, 0, 90deg) translateZ(4rem);
-}
-
-[data-side="5"] {
-  transform: rotate3d(1, 0, 0, 90deg) translateZ(4rem);
-}
-
-[data-side="6"] {
-  transform: rotate3d(1, 0, 0, 180deg) translateZ(4rem);
-}
-
-[data-side="1"] .dot:nth-of-type(1) {
-  grid-area: five;
-}
-
-[data-side="2"] .dot:nth-of-type(1) {
-  grid-area: one;
-}
-
-[data-side="2"] .dot:nth-of-type(2) {
-  grid-area: nine;
-}
-
-[data-side="3"] .dot:nth-of-type(1) {
-  grid-area: one;
-}
-
-[data-side="3"] .dot:nth-of-type(2) {
-  grid-area: five;
-}
-
-[data-side="3"] .dot:nth-of-type(3) {
-  grid-area: nine;
-}
-
-[data-side="4"] .dot:nth-of-type(1) {
-  grid-area: one;
-}
-
-[data-side="4"] .dot:nth-of-type(2) {
-  grid-area: three;
-}
-
-[data-side="4"] .dot:nth-of-type(3) {
-  grid-area: seven;
-}
-
-[data-side="4"] .dot:nth-of-type(4) {
-  grid-area: nine;
-}
-
-[data-side="5"] .dot:nth-of-type(1) {
-  grid-area: one;
-}
-
-[data-side="5"] .dot:nth-of-type(2) {
-  grid-area: three;
-}
-
-[data-side="5"] .dot:nth-of-type(3) {
-  grid-area: five;
-}
-
-[data-side="5"] .dot:nth-of-type(4) {
-  grid-area: seven;
-}
-
-[data-side="5"] .dot:nth-of-type(5) {
-  grid-area: nine;
-}
-
-[data-side="6"] .dot:nth-of-type(1) {
-  grid-area: one;
-}
-
-[data-side="6"] .dot:nth-of-type(2) {
-  grid-area: three;
-}
-
-[data-side="6"] .dot:nth-of-type(3) {
-  grid-area: four;
-}
-
-[data-side="6"] .dot:nth-of-type(4) {
-  grid-area: six;
-}
-
-[data-side="6"] .dot:nth-of-type(5) {
-  grid-area: seven;
-}
-
-[data-side="6"] .dot:nth-of-type(6) {
-  grid-area: nine;
+/* This selects the last pip of odd-valued dice (1, 3, 5) and positions the pip in the center */
+.pip:nth-child(odd):last-child {
+	grid-area: g;
 }
 
 table {
   background-color: #0004;
-}
-
-thead tr:nth-of-type(1) {
-  color: darkturquoise;
-}
-
-tbody tr:nth-of-type(1) {
-  color: #66bb6a;
-}
-
-tbody tr:nth-of-type(2) {
-  color: #fff176;
-}
-
-tbody tr:nth-of-type(3) {
-  color: #29b6f6;
-}
-
-tbody tr:nth-of-type(4) {
-  color: #e53935;
 }
 
 .panel-top, .panel-bottom {
@@ -475,5 +317,78 @@ th, td {
   box-shadow: 0 0 10px 7px orangered;
 }
 
-
-
+body {
+  margin: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+ 
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+ 
+.chat {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-left: 50px;
+  margin-top: 0cm !important;
+  width: 15%;
+  height: 80vh;
+  float: left;
+  text-align: justify;
+}
+ 
+.head {
+  background: #2d3436;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  font-weight: 600;
+  color: #f5f5f5;
+}
+ 
+.messages {
+  height: 60vh;
+  overflow-y: auto;
+  padding: 15px 10px;
+}
+ 
+.msg {
+  border: 1px solid #ddd;
+  padding: 7px 15px;
+  border-radius: 20px;
+  font-size: 13px;
+  background: #dfe6e9;
+  margin-bottom: 20px;
+  width: 80%;
+  float: left;
+}
+ 
+.msg.dark {
+  float: right;
+  background: #00cec9;
+}
+ 
+.footer {
+  display: flex;
+  border-top: 1px solid #ddd;
+}
+ 
+input {
+  padding: 10px;
+  width: 290px;
+  border: 0;
+  margin-right: 10px;
+}
+ 
+input:focus {
+  outline: none;
+}
+ 
+.footer img {
+  cursor: pointer;
+}

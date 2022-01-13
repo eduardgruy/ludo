@@ -2,6 +2,9 @@
 interface Props {
     colors: string,
     movable: boolean
+    myTurn: boolean
+    move(tileName: string): void,
+    tileName: string
 }
 
 export default function Goti(props: Props) {
@@ -16,9 +19,10 @@ export default function Goti(props: Props) {
         <span>
 
             <div
-                className={'egg-bottom ' + (props.movable ? 'glow' : '')}
-                style={{ background: 'radial-gradient(circle at 33% 33%, ' + colors[props.colors] + ', #000)', height: "60%", width: "70%", }}>
-                <div className={'egg-top ' + (props.movable ? 'glow' : '')}
+                className={'egg-bottom ' + (props.myTurn && props.movable ? 'glow' : '')}
+                style={{ background: 'radial-gradient(circle at 33% 33%, ' + colors[props.colors] + ', #000)', height: "60%", width: "70%", }}
+                onClick={() => { props.move(props.tileName) }}>
+                <div className={'egg-top ' + (props.myTurn && props.movable ? 'glow' : '')}
                     style={{ background: 'radial-gradient(circle at 33% 33%, ' + colors[props.colors] + ', #000)', height: "60%", width: "70%", }}>
 
                 </div>

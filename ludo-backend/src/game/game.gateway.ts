@@ -53,7 +53,7 @@ export class GameGateway {
         this.gameService.getCurrentGame(session._id)
           .then(game => {
             if (game) {
-              console.log("joining to game" +game._id)
+              console.log("joining to game" + game._id)
               socket.join(String(game._id))
               socket.emit("game", game)
             }
@@ -155,7 +155,7 @@ export class GameGateway {
     this.gameService.startGame(socket.id, gameId)
       .then(game => {
         if (game) {
-          this.server.in(game._id).emit("game", game)
+          this.server.in(String(game._id)).emit("game", game)
           this.server.emit("game-removed", game._id)
         }
       }
@@ -182,7 +182,7 @@ export class GameGateway {
     @ConnectedSocket() socket: Socket) {
     this.gameService.roll(socket.id, gameId)
       .then(game => {
-        this.server.in(String(game._id)).emit('rolled', game)
+        this.server.in(String(game._id)).emit('game', game)
       })
   }
   @SubscribeMessage('chat')
@@ -193,12 +193,12 @@ export class GameGateway {
 
   @SubscribeMessage('move')
   async move(@MessageBody('gameId') gameId: string,
-    @MessageBody('pawn') pawn: string,
+    @MessageBody('tileName') tileName: string,
     @ConnectedSocket() socket: Socket) {
     //todo
-    this.gameService.move(socket.id, gameId, pawn)
+    this.gameService.move(socket.id, gameId, tileName)
       .then(game => {
-        this.server.in(String(game._id)).emit('rolled', game)
+        this.server.in(String(game._id)).emit('game', game)
       })
 
     // this.server.in(gameId).emit("player-move", game)

@@ -14,7 +14,7 @@ export const GameSchema = new Schema({
     lastRoll: Number, 
     doubleRoll: Boolean,
     turn: String,
-    actions: Number,
+    action: String,
     event: String,
     positions: {
         type: {
