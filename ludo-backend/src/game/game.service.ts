@@ -5,6 +5,10 @@ import { Game } from './interface/game.interface';
 import { Session } from './interface/session.interface';
 import { INITIAL_POSITIONS, OFFSET, ORDER } from './constants';
 
+type Pawn = {
+    name: string,
+    position: string
+}
 
 @Injectable()
 export class GameService {
@@ -14,6 +18,9 @@ export class GameService {
         @Inject('SESSION_MODEL')
         private sessionModel: Model<Session>,
     ) { }
+
+
+
 
     async createGame(socketId: string, gameName: string): Promise<Game> {
         const session = await this.getSession(socketId)
@@ -74,6 +81,11 @@ export class GameService {
         return this.gameModel.findById(gameId)
 
     }
+    async getFinishedGames(socketId: string): Promise<Game[]> {
+        const session = await this.getSession(socketId)
+        return this.gameModel.find({ "players.username": session._id, status: "finished" })
+
+    }
 
     async getGameDetails(socketId: string, gameId: string): Promise<Game> {
         const session = await this.getSession(socketId)
@@ -126,10 +138,6 @@ export class GameService {
         const game = await this.getGame(gameId)
         const session = await this.getSession(socketId)
 
-        type Pawn = {
-            name: string,
-            position: string
-        }
 
         const isBlocked = (pawn: Pawn): boolean => {
             const futurePosition = this.getNextPosition(playerColor, pawn.position, rolled)
@@ -176,14 +184,14 @@ export class GameService {
         }).map((pawn: Pawn) => pawn.name)
         console.log(movable)
 
-    
+
         if (movable?.length >= 1) {
             game.lastRoll = rolled
             game.movable = movable
             game.action = "move"
             game.event = `${session._id} rolled ${rolled} and he can move figures on ${movable}`
         } else {
-            game.lastRoll = null
+            game.lastRoll = rolled
             game.action = "roll"
             game.turn = ORDER[(ORDER.indexOf(game.turn) == 3) ? 0 : ORDER.indexOf(game.turn) + 1]
             game.event = `${session._id} rolled ${rolled} and he can't move any figures. ${game.turn} is rolling`
@@ -196,6 +204,15 @@ export class GameService {
     }
 
     async move(socketId: string, gameId: string, tileName: string): Promise<Game> {
+
+        const checkDidWin = (playerColor: string, game: Game) => {
+            const pawnsAtFinish = game.positions[playerColor].filter((pawn: Pawn) => {
+                return pawn.position.substring(0, 1) === "h" ? true : false
+            })
+
+            return pawnsAtFinish.length === 4 ? true : false
+        }
+
         const game = await this.getGame(gameId)
         const session = await this.getSession(socketId)
         const playerColor = game.players.find(player => player.username == session._id).color
@@ -238,10 +255,18 @@ export class GameService {
                 game.positions[color][pawnToReturn].position = color.substring(0, 1) + game.positions[color][pawnToReturn].name.substring(1)
             }
         });
-        if (isLeavingStart) {
+
+        const won = checkDidWin(playerColor, game)
+        if (won) {
+            game.movable = []
+            game.status = "finished"
+            game.winner = session._id
+            game.action = "none"
+            game.event = `${session._id} won!`
+        } else if (isLeavingStart) {
             game.movable = []
             game.action = "roll"
-            game.event = `${session._id} rolled 6 and will roll again`
+            game.event = `${session._id} is leaving start and will roll again`
         } else if (game.lastRoll == 6 && !isLeavingStart && !game.doubleRoll) {
             game.movable = []
             game.action = "roll"
@@ -250,11 +275,10 @@ export class GameService {
 
         } else {
             game.movable = []
-            game.lastRoll = null
             game.action = "roll"
             game.doubleRoll = false
             game.turn = ORDER[(ORDER.indexOf(game.turn) == 3) ? 0 : ORDER.indexOf(game.turn) + 1]
-            game.event = `${session._id} moved, ${game.turn} is next and will roll again`
+            game.event = `${session._id} moved, ${game.turn} is next and will roll`
         }
 
 

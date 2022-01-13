@@ -13,12 +13,10 @@ const Lobby: React.FC = () => {
   const history = useHistory()
 
   const handlePopulateGames = useCallback((games: Array<GameI>) => {
-    console.log("got new games", games)
     if (games) setRooms([...games])
   }, []);
 
   const handleAddGame = useCallback((game: GameI) => {
-    console.log("new game!", game)
     setRooms(rooms => rooms ? [...rooms, game] : [game])
   }, [setRooms]);
 

@@ -7,6 +7,7 @@ interface Props {
     tileName: string
 }
 
+
 export default function Goti(props: Props) {
     const colors: Record<string, string> = {
         green: '#66bb6a',

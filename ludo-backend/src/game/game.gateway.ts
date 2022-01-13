@@ -108,6 +108,15 @@ export class GameGateway {
       })
   }
 
+  @SubscribeMessage("get-finished-games")
+  async getProfile( @ConnectedSocket() socket: Socket) {
+    console.log("Getting games")
+    this.gameService.getFinishedGames(socket.id)
+      .then(games => {
+        socket.emit("finished-games", games)
+      })
+  }
+
 
 
   @SubscribeMessage('join-game')
@@ -121,7 +130,7 @@ export class GameGateway {
         // update game for users already joined
         this.server.sockets.in(String(game._id)).emit("game", game)
         //update game in lobby
-        socket.emit("updated-game", game)
+        this.server.emit("updated-game", game)
 
 
       })
@@ -187,7 +196,7 @@ export class GameGateway {
   }
   @SubscribeMessage('chat')
   async chat(@MessageBody('gameId') gameId: string,
-    @MessageBody('message') message: string) {
+    @MessageBody('message') message: any) {
     this.server.in(String(gameId)).emit('chat', message)
   }
 

@@ -16,6 +16,7 @@ import Register from "./components/Register";
 import Lobby from "./components/Lobby";
 import Profile from "./components/Profile";
 import Game from "./components/Game"
+import Player from "./components/Music";
 
 import EventBus from "./common/EventBus";
 
@@ -68,7 +69,12 @@ const App: React.FC = () => {
             <Link to={"/lobby"} className="nav-link">
               Lobby
             </Link>
+
           </li>
+          <li className="nav-item">
+            <Player url={"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"} />
+          </li>
+
         </div>
 
         {currentUser ? (
